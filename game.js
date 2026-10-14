@@ -240,6 +240,7 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("sliderBar", 'assets/sliderBar.png');
     this.load.image('square04_001', "assets/square04_001.png");
     this.load.image("GJ_square02", "assets/GJ_square02.png");
+    this.load.image("custom_cube", "assets/custom_cube.png");
     this.load.json("object_overrides", "assets/levels/object_overrides.json");
     const _0x4d7bd3 = Pn();
     const _0x57faeb = Dn(_0x4d7bd3);
@@ -5947,17 +5948,27 @@ class ps {
     const _0x1872a7 = this._scene;
     const _0x28689a = 0x1cc - this.p.y;
     const _0xf42f36 = h;
+    const _customCube = _0x1872a7.textures.exists("custom_cube");
     this._playerGlowLayer = ds(_0x1872a7, _0xf42f36, _0x28689a, "player_01_glow_001.png", 0x9, false);
-    this._playerSpriteLayer = ds(_0x1872a7, _0xf42f36, _0x28689a, 'player_01_001.png', 0xa, true);
-    this._playerOverlayLayer = ds(_0x1872a7, _0xf42f36, _0x28689a, "player_01_2_001.png", 0x8, true);
-    this._playerExtraLayer = ds(_0x1872a7, _0xf42f36, _0x28689a, "player_01_extra_001.png", 0xc, true);
+    if (_customCube) {
+      const _customCubeSprite = _0x1872a7.add.image(_0xf42f36, _0x28689a, "custom_cube");
+      _customCubeSprite.setDepth(0xa);
+      _customCubeSprite.setVisible(true);
+      this._playerSpriteLayer = {
+        sprite: _customCubeSprite
+      };
+    } else {
+      this._playerSpriteLayer = ds(_0x1872a7, _0xf42f36, _0x28689a, 'player_01_001.png', 0xa, true);
+    }
+    this._playerOverlayLayer = _customCube ? null : ds(_0x1872a7, _0xf42f36, _0x28689a, "player_01_2_001.png", 0x8, true);
+    this._playerExtraLayer = _customCube ? null : ds(_0x1872a7, _0xf42f36, _0x28689a, "player_01_extra_001.png", 0xc, true);
     if (this._playerGlowLayer) {
       this._playerGlowLayer.sprite.setTint(0xffff);
       this._playerGlowLayer.sprite._glowEnabled = false;
     }
-    if (this._playerSpriteLayer) {
+    if (this._playerSpriteLayer && !_customCube) {
       this._playerSpriteLayer.sprite.setTint(0xff00);
-    } else {
+    } else if (!this._playerSpriteLayer) {
       let _0x3aecd9 = _0x1872a7.add.rectangle(_0xf42f36, _0x28689a, 0x3c, 0x3c, 0xff00);
       _0x3aecd9.setDepth(0xa);
       this._playerSpriteLayer = {
